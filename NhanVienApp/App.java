@@ -1,8 +1,8 @@
-import java.util.*;
+import java.text.ParseException;
+
 class App {
-	public static void main(String[] args){
-		NV nv1 = new NV();
-		nv1.nhapDS();
-		nv1.xuatDS();
+	public static void main(String[] args) throws ParseException {
+		NhanVien.nhapDS();
+		NhanVien.xuatDS();
 	}
 }

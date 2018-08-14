@@ -1,18 +1,19 @@
-public class NhanVien {
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Scanner;
+
+public abstract class NhanVien {
 	private int maNV;
 	private String hoten,diachi;
-	NV list[];
+	private static NhanVien list[];
+	private Date ngaySinh;
+	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	
-	public NV(){};
-	public NV(int maNV, String hoten, String diachi) {
-		this.maNV = maNV;
-		this.hoten = hoten;
-		this.diachi = diachi;
-	}
-	public double luong(){
-		return 0;
-	}
-	public void nhap(){
+	public abstract double tinhLuong();
+	
+	public void nhap() throws ParseException {
+		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);
 		System.out.print("Nhap maNV: ");
 		this.maNV = sc.nextInt();
@@ -21,11 +22,19 @@ public class NhanVien {
 		this.hoten = sc.nextLine();
 		System.out.print("Nhap dia chi: ");
 		this.diachi = sc.nextLine();
+		System.out.print("Nhap ngay sinh: ");
+		String dongNguoidungNhap = sc.nextLine(); // 21/11/1998 -> xem là string
+		this.ngaySinh = sdf.parse(dongNguoidungNhap); // biến chuỗi String thành Date object
+		
 	}
-	public void xuat(){
-		System.out.println("MaNV: " + maNV + " HoTen: " + hoten + " Diachi: " + diachi + " luong:" + luong());
+
+	public String toString() {
+		return "MaNV: " + maNV + " HoTen: " + hoten + " Diachi: " + diachi + "Ngay sinh: " + sdf.format(ngaySinh); // chuyển Date object -> String
 	}
-	public void nhapDS(){
+	
+	
+	// Static method
+	public static void nhapDS() throws ParseException {
 		Scanner sc = new Scanner(System.in);
 		int n,chon=0,index=0;
 		System.out.print("Nhap so nhan vien(1-100): ");
@@ -37,7 +46,7 @@ public class NhanVien {
 			System.out.print("Nhap so nhan vien(1-100): ");
 			n = sc.nextInt();
 		}
-		list = new NV[n];
+		list = new NhanVien[n];
 		for(int i = 0; i<n ; i++)
 		{
 			do{
@@ -45,24 +54,24 @@ public class NhanVien {
 			chon = sc.nextInt();
 			if(chon==1)
 			{
-				NVHD hd = new NVHD();
+				NVHopDong hd = new NVHopDong();
 				hd.nhap();
 				list[index++]= hd;
 			}
 			else if(chon==2)
 			{
-				NVBC bc = new NVBC();
+				NVBienChe bc = new NVBienChe();
 				bc.nhap();
 				list[index++]= bc;
 			}
 			}while(chon < 1 || chon > 2);
 		}
+		sc.close();
 	}
-	public void xuatDS(){
-		for(NV i : list)
+	public static void xuatDS(){
+		for(NhanVien i : list)
 		{
-			i.xuat();
-			System.out.println(" ");
+			System.out.println(i + "\n");
 		}
 	}
 }
